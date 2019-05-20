@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Tanner Anz">
+
+    <title class="title">Tilson DataMap</title>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/cr-1.5.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.css"/>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="//unpkg.com/tabulator-tables@4.2.1/dist/css/tabulator.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+    <link rel="stylesheet" href="plugins/leaflet/leaflet-sidebar2/css/leaflet-sidebar.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="pictures/tilson%20icon.ico" />
+
+  </head>
+
+  <body>
+      
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#search" role="tab"><i class="fa fa-lg fa-search"></i></a></li>
+                <li><a href="#details" role="tab"><i class="fa fa-lg fa-info"></i></a></li>
+                <li><a href="#legend" role="tab"><i class="fa fa-lg fa-list"></i></a></li>
+            </ul>
+
+            <ul role="tablist">
+                <li><a href="https://tilsontech.com" role="tab" target="_blank"><img src="pictures/tilson.png" width="30" height="28"></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="search">
+                <h1 class="sidebar-header">Search<span class="sidebar-close"><i class="fa fa-lg fa-caret-left"></i></span></h1>
+                <div class="modal-body">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#sitesSearch" aria-controls="sitesSearch" role="tab" data-toggle="tab">Sites</a></li>
+                            <li role="presentation"><a href="#segmentsSearch" aria-controls="segmentsSearch" role="tab" data-toggle="tab">Segments</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="sitesSearch" >
+                              <div class="panel panel-default" id="gisSites_features">
+                                  <div class="panel-body">
+                                    <div class="row">
+                                      <div class="col-xs-8 col-md-8">
+                                        <input type="text" class="form-control search" placeholder="Search" />
+                                      </div>
+                                      <div class="col-xs-4 col-md-4">
+                                        <button type="button" class="btn btn-primary pull-right sort" data-sort="gisSites_feature-name" id="gisSites_sort-btn"><i class="fa fa-sort"></i>&nbsp;&nbsp;Sort</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="sidebar-table">
+                                    <table class="table table-hover" id="gisSites_feature-list">
+                                      <tbody class="list"></tbody>
+                                    </table>
+                                  </div>
+                              </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="segmentsSearch">
+                             <div class="panel panel-default" id="gisSegments_features">
+                                  <div class="panel-body">
+                                    <div class="row">
+                                      <div class="col-xs-8 col-md-8">
+                                        <input type="text" class="form-control search" placeholder="Search" />
+                                      </div>
+                                      <div class="col-xs-4 col-md-4">
+                                        <button type="button" class="btn btn-primary pull-right sort" data-sort="gisSegments_feature-name" id="gisSegments_sort-btn"><i class="fa fa-sort"></i>&nbsp;&nbsp;Sort</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="sidebar-table">
+                                    <table class="table table-hover" id="gisSegments_feature-list">
+                                      <tbody class="list"></tbody>
+                                    </table>
+                                  </div>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-pane" id="details">
+                <h1 class="sidebar-header">Details<span class="sidebar-close"><i class="fa fa-lg fa-caret-left"></i></span></h1>
+                <div class="modal-body">
+                    <div role="tabpanel">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active" id="sitesTab"><a href="#sitesDetails" aria-controls="sitesDetails" role="tab" data-toggle="tab">Sites</a></li>
+                            <li role="presentation" id="segmentsTab"><a href="#segmentsDetails" aria-controls="segmentsDetails" role="tab" data-toggle="tab">Segments</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="sitesDetails" >
+                              <br>
+                              <h3 class="modal-title text-primary" id="gisSitesInfo_Title"></h3>
+                              <div class="modal-body" id="gisSites-Info_DATA"></div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" id="gisSitesEdit-btn">Edit </button>
+                                <button type="button" class="btn btn-success" id="gisSitesSubmit-btn">Submit </button>
+                                <button type="button" class="btn btn-default" id="gisSitesClose-sidebarBTN">Cancel</button>
+                              </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="segmentsDetails" >
+                              <br>
+                              <h3 class="modal-title text-primary" id="gisSegmentsInfo_Title"></h3>
+                              <div class="modal-body" id="gisSegments-Info_DATA"></div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" id="gisSegmentsEdit-btn">Edit </button>
+                                <button type="button" class="btn btn-success" id="gisSegmentsSubmit-btn">Submit </button>
+                                <button type="button" class="btn btn-default" id="gisSegmentsClose-sidebarBTN">Cancel</button>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-pane" id="legend">
+                <h1 class="sidebar-header">Legend<span class="sidebar-close"><i class="fa fa-lg fa-caret-left"></i></span></h1>
+            </div>
+        </div>
+    </div>
+
+    <div id="map" class="sidebar-map"></div>
+      
+      
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="//cdn.datatables.net/v/bs/jszip-2.5.0/dt-1.10.18/af-2.3.2/b-1.5.4/b-colvis-1.5.4/b-flash-1.5.4/b-html5-1.5.4/b-print-1.5.4/cr-1.5.0/r-2.2.2/sc-1.5.0/sl-1.2.6/datatables.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.19/dataRender/datetime.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+    <script src="//cdn.jsdelivr.net/alasql/0.2/alasql.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
+    <script src="plugins/leaflet/leaflet-sidebar2/js/jquery-sidebar.js"></script>
+    <script src="plugins/leaflet/leaflet-sidebar2/js/leaflet-sidebar.js"></script>
+    <script src="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+    <script src="//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="//maps.googleapis.com/maps/api/js"></script>
+    
+    <script src="scripts/base.js"></script>
+    <script src="scripts/gisSites.js"></script>
+    <script src="scripts/gisSegments.js"></script>
+    <script src="scripts/layers.js"></script>
+    <script src="scripts/sidebar.js"></script>
+    <script src="scripts/refresh.js"></script>
+  </body>
+</html>
