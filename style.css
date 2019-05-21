@@ -109,6 +109,11 @@ input[type="radio"], input[type="checkbox"] {
   text-transform: uppercase;
   text-shadow: 1px 1px 4px white;
 }
+#gisSegmentsInfo_Title {
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 4px white;
+}
 .leaflet-control-layers label {
   font-weight: normal;
   margin-bottom: 0px;
